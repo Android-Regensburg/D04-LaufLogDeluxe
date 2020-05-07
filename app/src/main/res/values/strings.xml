@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">LaufLog</string>
+    <string name="date_label">An welchem Tag bis du gelaufen?</string>
+    <string name="distance_label">Distanz</string>
+    <string name="distance_hint">21.0975</string>
+    <string name="time_minutes_label">Minuten</string>
+    <string name="time_minutes_hint">58</string>
+    <string name="time_seconds_label">Sekunden</string>
+    <string name="time_seconds_hint">1</string>
+    <string name="input_hint">Bitte gib die Strecke, die du gelaufen bist in Kilometern an und trage die Zeit, die du dafür benötigt hast, als Minuten und Sekunden ein.</string>
+    <string name="input_button_label">Speichern</string>
+    <string name="new_log_entry_label">Neuer Eintrag</string>
+    <string name="list_description">Hier siehst du eine Übersicht über deine Läufe. Neue Einträge kannst du über den Plus-Button hinzufügen.</string>
+    <string name="toggle_sort_mode_label">Sortierung umschalten</string>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/log_entry"
+    android:orientation="horizontal"
+    android:weightSum="100"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="70"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/log_entry_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="20. August 2019"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textAlignment="textStart" />
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:weightSum="100">
+
+         <TextView
+             android:id="@+id/log_entry_distance"
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
+             android:layout_weight="50"
+             android:text="7,6 Kilometer"
+             android:textSize="20sp"
+             android:textAlignment="textStart"/>
+
+         <TextView
+             android:id="@+id/log_entry_time"
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
+             android:layout_weight="50"
+             android:text="56:08 Minuten"
+             android:textSize="20sp"
+             android:textAlignment="textStart"/>
+
+     </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/log_entry_pace"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="30"
+        android:layout_gravity="center"
+        android:text="06:14"
+        android:textSize="28sp"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"
+        />
+
+</LinearLayout>
