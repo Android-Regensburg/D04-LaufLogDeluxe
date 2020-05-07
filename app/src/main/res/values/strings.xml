@@ -12,4 +12,8 @@
     <string name="new_log_entry_label">Neuer Eintrag</string>
     <string name="list_description">Hier siehst du eine Übersicht über deine Läufe. Neue Einträge kannst du über den Plus-Button hinzufügen.</string>
     <string name="toggle_sort_mode_label">Sortierung umschalten</string>
+    <string name="sort_mode_hint">Sortierung</string>
+    <string name="sort_mode_date">Datum</string>
+    <string name="sort_mode_distance">Distanz</string>
+    <string name="sort_mode_pace">Geschwindigkeit</string>
 </resources>

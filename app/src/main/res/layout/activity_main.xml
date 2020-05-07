@@ -17,6 +17,30 @@
             android:layout_height="wrap_content"
             android:text="@string/list_description" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="100">
+
+            <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="@string/sort_mode_hint"
+            android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/sort_mode_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/log_entry_list"
             android:layout_width="match_parent"

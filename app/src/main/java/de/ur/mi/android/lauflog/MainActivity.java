@@ -9,13 +9,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import de.ur.mi.android.lauflog.data.LogEntry;
 import de.ur.mi.android.lauflog.data.LogEntryAdapter;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<LogEntry> log;
     private LogEntryAdapter logAdapter;
     private ListView entriesList;
+    private TextView sortModeStatus;
 
     private SortMode currentSortMode = SortMode.DATE;
     private Comparator<LogEntry> currentComparator = LogEntry.getDateComparator();
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private void initUI() {
         setContentView(R.layout.activity_main);
         entriesList = findViewById(R.id.log_entry_list);
+        sortModeStatus = findViewById(R.id.sort_mode_status);
+        sortModeStatus.setText(R.string.sort_mode_date);
     }
 
     private void initLog() {
@@ -61,12 +63,15 @@ public class MainActivity extends AppCompatActivity {
         switch (currentSortMode) {
             case DATE:
                 currentComparator = LogEntry.getDateComparator();
+                sortModeStatus.setText(R.string.sort_mode_date);
                 break;
             case DISTANCE:
                 currentComparator = LogEntry.getDistanceComparator();
+                sortModeStatus.setText(R.string.sort_mode_distance);
                 break;
             case PACE:
                 currentComparator = LogEntry.getPaceComparator();
+                sortModeStatus.setText(R.string.sort_mode_pace);
                 break;
         }
         sortLog();
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addLogFromIntent(Intent data) {
-        LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(data.getExtras().getLong(InputActivity.DATE_KEY)), ZoneId.systemDefault());
+        Date date = new Date(data.getExtras().getLong(InputActivity.DATE_KEY));
         float distance = data.getExtras().getFloat(InputActivity.DISTANCE_KEY);
         int minutes = data.getExtras().getInt(InputActivity.MINUTES_KEY);
         int seconds = data.getExtras().getInt(InputActivity.SECONDS_KEY);
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sortLog() {
         Collections.sort(log, currentComparator);
-        logAdapter.notifyDataSetChanged();
+        logAdapter.updateDataSet(new ArrayList<LogEntry>(log));
     }
 
     @Override
@@ -100,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_FOR_NEW_LOG_ENTRY:
                 if (resultCode == RESULT_CODE_FOR_VALID_LOG_ENTRY) {
                     addLogFromIntent(data);
                 }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

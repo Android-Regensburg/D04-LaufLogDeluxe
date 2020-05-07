@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import de.ur.mi.android.lauflog.R;
@@ -28,15 +28,20 @@ public class LogEntryAdapter extends ArrayAdapter<LogEntry> {
         this.entries = entries;
     }
 
+    public void updateDataSet(ArrayList<LogEntry> entries) {
+        this.entries = entries;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View entryView = convertView;
-        if(entryView == null) {
-            entryView =  LayoutInflater.from(this.getContext()).inflate(R.layout.item_log_entry, null);
+        if (entryView == null) {
+            entryView = LayoutInflater.from(this.getContext()).inflate(R.layout.item_log_entry, null);
         }
         LogEntry currentEntry = entries.get(position);
-        if(currentEntry != null) {
+        if (currentEntry != null) {
             TextView dateView = entryView.findViewById(R.id.log_entry_date);
             TextView distanceView = entryView.findViewById(R.id.log_entry_distance);
             TextView timeView = entryView.findViewById(R.id.log_entry_time);
@@ -49,8 +54,9 @@ public class LogEntryAdapter extends ArrayAdapter<LogEntry> {
         return entryView;
     }
 
-    private String getFormattedDate(LocalDateTime date) {
-       return DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.getDefault()).format(date);
+    private String getFormattedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("E, dd. MMMM yyyy", Locale.getDefault());
+        return sdf.format(date);
     }
 
     private String getFormattedDistance(float distance, String suffix) {

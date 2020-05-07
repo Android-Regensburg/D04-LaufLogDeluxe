@@ -1,24 +1,21 @@
 package de.ur.mi.android.lauflog.data;
 
-import android.util.Log;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Comparator;
+import java.util.Date;
 
 public class LogEntry {
 
-    private final LocalDateTime date;
+    private final Date date;
     private final float timeInMinutes;
     private final float distanceInKilometers;
 
-    public LogEntry(LocalDateTime date, float timeInMinutes, float distanceInKilometers) {
+    public LogEntry(Date date, float timeInMinutes, float distanceInKilometers) {
         this.date = date;
         this.timeInMinutes = timeInMinutes;
         this.distanceInKilometers = distanceInKilometers;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -38,8 +35,8 @@ public class LogEntry {
         Comparator  comparator = new Comparator<LogEntry>() {
             @Override
             public int compare(LogEntry o1, LogEntry o2) {
-                long thisDateInMs = o1.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                long thatDateInMs = o2.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                long thisDateInMs = o1.getDate().getTime();
+                long thatDateInMs = o2.getDate().getTime();
                 return (int) (thisDateInMs - thatDateInMs);
             }
         };
@@ -50,7 +47,7 @@ public class LogEntry {
         Comparator  comparator = new Comparator<LogEntry>() {
             @Override
             public int compare(LogEntry o1, LogEntry o2) {
-                return (int) (o1.getDistance() - o2.getDistance());
+                return (int) (o2.getDistance() - o1.getDistance());
             }
         };
         return comparator;
