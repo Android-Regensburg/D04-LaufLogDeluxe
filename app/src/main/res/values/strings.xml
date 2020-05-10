@@ -16,4 +16,6 @@
     <string name="sort_mode_date">Datum</string>
     <string name="sort_mode_distance">Distanz</string>
     <string name="sort_mode_pace">Geschwindigkeit</string>
+    <string name="kilometer_suffix">km</string>
+    <string name="minutes_suffix">min</string>
 </resources>
