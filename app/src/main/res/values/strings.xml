@@ -18,4 +18,6 @@
     <string name="sort_mode_pace">Geschwindigkeit</string>
     <string name="kilometer_suffix">km</string>
     <string name="minutes_suffix">min</string>
+    <string name="cancel_input">Eingabe abbrechen</string>
+    <string name="submit_input">Eingabe beenden</string>
 </resources>

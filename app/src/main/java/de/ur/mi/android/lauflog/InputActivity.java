@@ -3,18 +3,21 @@ package de.ur.mi.android.lauflog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import de.ur.mi.android.lauflog.request.RequestConfig;
+import de.ur.mi.android.lauflog.log.LogRequestConfig;
 
 
 /**
@@ -40,13 +43,6 @@ public class InputActivity extends AppCompatActivity {
         distanceInput = findViewById(R.id.distance_input_text);
         minutesInput = findViewById(R.id.time_minutes_input_text);
         secondsInput = findViewById(R.id.time_seconds_input_text);
-        Button saveButton = findViewById(R.id.save_entry_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                returnInputDataToCallingActivity();
-            }
-        });
     }
 
     /**
@@ -60,11 +56,16 @@ public class InputActivity extends AppCompatActivity {
         int minutesEntered = getValueFromTimeInput(minutesInput);
         int secondsEntered = getValueFromTimeInput(secondsInput);
         Intent inputData = new Intent();
-        inputData.putExtra(RequestConfig.DATE_KEY, selectedDate.getTime());
-        inputData.putExtra(RequestConfig.DISTANCE_KEY, distanceEntered);
-        inputData.putExtra(RequestConfig.MINUTES_KEY, minutesEntered);
-        inputData.putExtra(RequestConfig.SECONDS_KEY, secondsEntered);
+        inputData.putExtra(LogRequestConfig.DATE_KEY, selectedDate.getTime());
+        inputData.putExtra(LogRequestConfig.DISTANCE_KEY, distanceEntered);
+        inputData.putExtra(LogRequestConfig.MINUTES_KEY, minutesEntered);
+        inputData.putExtra(LogRequestConfig.SECONDS_KEY, secondsEntered);
         setResult(Activity.RESULT_OK, inputData);
+        finish();
+    }
+
+    private void informCallingActivityAboutCanceledInput() {
+        setResult(Activity.RESULT_CANCELED, null);
         finish();
     }
 
@@ -103,5 +104,22 @@ public class InputActivity extends AppCompatActivity {
         return Integer.parseInt(input.getText().toString());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_input, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_input:
+                informCallingActivityAboutCanceledInput();
+                break;
+            case R.id.submit_input:
+                returnInputDataToCallingActivity();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -94,14 +94,6 @@
             android:text="@string/input_hint"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/save_entry_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/input_button_label"
-            android:textColor="@color/colorBackground" />
 
     </LinearLayout>
 

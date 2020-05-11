@@ -1,4 +1,4 @@
-package de.ur.mi.android.lauflog.request;
+package de.ur.mi.android.lauflog.log;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,7 +24,7 @@ import de.ur.mi.android.lauflog.R;
 /**
  * Adapter zur Anzeige einer Liste von LogEntries als Inhalt einer ListView im User Interface
  */
-    public class LogEntryAdapter extends ArrayAdapter<LogEntry> {
+public class LogEntryAdapter extends ArrayAdapter<LogEntry> {
 
     // Liste der LogEntries, die über den Adapter verwaltet werden
     private ArrayList<LogEntry> entries;
@@ -32,25 +32,6 @@ import de.ur.mi.android.lauflog.R;
     public LogEntryAdapter(Context context, ArrayList<LogEntry> entries) {
         super(context, R.layout.item_log_entry, entries);
         this.entries = entries;
-    }
-
-    /**
-     * Sortiert die aktuell im Adapter gespeicherte Liste von LogEntries anhand des übergebenen
-     * Comparators und informiert anschließend das angeschlossene ListView.
-     */
-    public void sortDataSet(Comparator<LogEntry> comparator) {
-        Collections.sort(entries, comparator);
-        this.notifyDataSetChanged();
-    }
-
-    /**
-     * Ersetzt die aktuell im Adapter gespeicherte Liste von LogEntries durch eine neue und
-     * informiert anschließend das angeschlossene ListView
-     */
-    public void updateDataSet(ArrayList<LogEntry> entries) {
-        Log.d("LaufApp", "Set new list (size: " + entries.size());
-        this.entries = entries;
-        this.notifyDataSetChanged();
     }
 
     /**
@@ -115,7 +96,7 @@ import de.ur.mi.android.lauflog.R;
     }
 
     /**
-     * Überladende Variante der getFormattedTime-Methode zur Nutzung ohne Suffix-String
+     * Überladende Variante der getFormattedTime-Methode zur Nutzung mit leerem Suffix-String
      */
     private String getFormattedTime(float time) {
         return getFormattedTime(time, "");
