@@ -16,7 +16,6 @@ import java.util.Date;
  */
 @Entity
 public class LogEntry {
-
     @PrimaryKey(autoGenerate = true)
     public Integer uid;
     @ColumnInfo(name = "date")
@@ -34,8 +33,8 @@ public class LogEntry {
     public static final Comparator<LogEntry> DATE_COMPARATOR = new Comparator<LogEntry>() {
         @Override
         public int compare(LogEntry o1, LogEntry o2) {
-            long thisDateInMs = o1.getDate().getTime();
-            long thatDateInMs = o2.getDate().getTime();
+            long thisDateInMs = o1.date.getTime();
+            long thatDateInMs = o2.date.getTime();
             return (int) (thisDateInMs - thatDateInMs);
         }
     };
@@ -48,7 +47,7 @@ public class LogEntry {
     public static final Comparator<LogEntry> DISTANCE_COMPARATOR = new Comparator<LogEntry>() {
         @Override
         public int compare(LogEntry o1, LogEntry o2) {
-            float distanceDelta = o1.getDistance() - o2.getDistance();
+            float distanceDelta = o1.distanceInKilometers - o2.distanceInKilometers;
             return distanceDelta > 0 ? -1 : 1;
         }
     };
@@ -71,18 +70,6 @@ public class LogEntry {
         this.date = date;
         this.timeInMinutes = timeInMinutes;
         this.distanceInKilometers = distanceInKilometers;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public float getTime() {
-        return timeInMinutes;
-    }
-
-    public float getDistance() {
-        return distanceInKilometers;
     }
 
     public float getPace() {

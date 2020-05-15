@@ -78,9 +78,9 @@ public class LogEntryAdapter extends RecyclerView.Adapter<LogEntryAdapter.LogEnt
         TextView distanceView = holder.entryView.findViewById(R.id.log_entry_distance);
         TextView timeView = holder.entryView.findViewById(R.id.log_entry_time);
         TextView paceView = holder.entryView.findViewById(R.id.log_entry_pace);
-        dateView.setText(getFormattedDate(entry.getDate()));
-        distanceView.setText(getFormattedDistance(entry.getDistance(), context.getString(R.string.kilometer_suffix)));
-        timeView.setText(getFormattedTime(entry.getTime(), context.getString(R.string.minutes_suffix)));
+        dateView.setText(getFormattedDate(entry.date));
+        distanceView.setText(getFormattedDistance(entry.distanceInKilometers, context.getString(R.string.kilometer_suffix)));
+        timeView.setText(getFormattedTime(entry.timeInMinutes, context.getString(R.string.minutes_suffix)));
         paceView.setText(getFormattedTime(entry.getPace()));
     }
 
