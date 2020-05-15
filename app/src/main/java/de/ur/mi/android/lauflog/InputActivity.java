@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -64,6 +62,10 @@ public class InputActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Bricht die Eingabe der neuen Daten ab und informiert die aufrufenden Activity über
+     * einen entsprechenden RESULT-Code.
+     */
     private void informCallingActivityAboutCanceledInput() {
         setResult(Activity.RESULT_CANCELED, null);
         finish();

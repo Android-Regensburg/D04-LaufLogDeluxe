@@ -1,9 +1,5 @@
 package de.ur.mi.android.lauflog;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +8,18 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import de.ur.mi.android.lauflog.log.LogRequestConfig;
 import de.ur.mi.android.lauflog.log.LogEntry;
 import de.ur.mi.android.lauflog.log.LogEntryAdapter;
+import de.ur.mi.android.lauflog.log.LogRequestConfig;
 import de.ur.mi.android.lauflog.log.LogSortMode;
 
 /**
