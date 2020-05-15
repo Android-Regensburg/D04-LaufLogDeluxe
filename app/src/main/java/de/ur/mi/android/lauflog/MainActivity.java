@@ -29,6 +29,13 @@ import de.ur.mi.android.lauflog.log.LogSortMode;
  * - Verwaltet eine Liste aller vorhandenen Einträge (Läufe) des Logs
  * - Ermöglicht die Eingabe neuer Einträge durch den Aufruf der InputActivity
  * - Stellt den aktuellen Inhalt der Liste in einem RecyclerView im UI dar
+ *
+ * Die Anwendung nutzt eine Datenbank:
+ * - Für den laufenden "Betrieb" der Anwendung wird weiterhin eine ArrayList zum Speichern der
+ *   Inhalte verwendet: Adapter und RecyclerView nutzten diese Liste
+ * - Jeder neue Eintrag wird in der Liste und zusätzlich in der Datenbank gespeichert
+ * - Beim Start der Anwendung werden alle in der Datenbank gespeicherten Einträge ausgelesen und
+ *   in der ArrayList gespeichert
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -61,9 +68,14 @@ public class MainActivity extends AppCompatActivity {
         entriesList.setAdapter(logAdapter);
     }
 
+    /**
+     * Erstellt bzw. öffnet die Datenbank über die Helper-Klasse
+     */
     private void initDB() {
         dbHelper = new LogEntryDatabaseHelper(this);
         try {
+            // Versucht alle Einträge aus der Datenbank auszulesen, in der ArrayList zu speichern,
+            // sortiert anschließend die Einträge und speichert die neue Liste im Adapter
             log = dbHelper.getAllEntries();
             sortAndUpdateList();
         } catch (Exception e) {
@@ -131,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
         int minutes = data.getExtras().getInt(LogRequestConfig.MINUTES_KEY);
         int seconds = data.getExtras().getInt(LogRequestConfig.SECONDS_KEY);
         LogEntry entry = new LogEntry(date, minutes + seconds / 60f, distance);
+        // Speichert den neuen Eintrag in der flüchtigen ArrayList
         log.add(entry);
+        // Speichert den Eintrag zusätzlich in der persistenten Datenbank
         dbHelper.storeLogEntry(entry);
         sortAndUpdateList();
     }

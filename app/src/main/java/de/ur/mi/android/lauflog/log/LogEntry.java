@@ -13,15 +13,26 @@ import java.util.Date;
  * Eigenschaften sind über Getter-Methoden zugänglich. Zum Vergleich bzw. zur Sortierung mehrere
  * LogEntry-Objekte anhand unterschiedlicher Kriterien bietet die Klasse verschiedene Comparator,
  * z.B. für die Verwendung mit Collections.sort an.
+ *
+ * Instanzen der LogEntry-Klassen können in einer Room-Datenbank persitiert werden. Dafür werden
+ * die einzelnen Felder der Klasse über entsprechende Annotationen konkreten Spalten in der automatisch
+ * erstellten LogEntry-Tabelle der Datenbank zugeordnet.
  */
 @Entity
 public class LogEntry {
+    // Annotation für Room-Datenbank: Automatisch erzeugter Primärschlüssel
     @PrimaryKey(autoGenerate = true)
     public Integer uid;
+    // Annotation für Room-Datenbank: Spaltennamen für Datums-Eigenschaft
+    // Instanzen komplexer Datentypen, wie hier die Date-Klasse, können nicht automatisch für
+    // die Speicherung in der Room-Datenbank konvertiert werden. Daher ist das Bereitstellen
+    // von Konvertern für diese Datentypen notwendig (siehe LogEntryConverters).
     @ColumnInfo(name = "date")
     public final Date date;
+    // Annotation für Room-Datenbank: Spaltenname für Zeit-Eigenschaft
     @ColumnInfo(name = "time_in_minutes")
     public final float timeInMinutes;
+    // Annotation für Room-Datenbank: Spaltenname für Strecken-Eigenschaft
     @ColumnInfo(name = "distance_in_kilomenters")
     public final float distanceInKilometers;
 
