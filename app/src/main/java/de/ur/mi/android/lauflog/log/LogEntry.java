@@ -1,5 +1,9 @@
 package de.ur.mi.android.lauflog.log;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Comparator;
 import java.util.Date;
 
@@ -10,11 +14,17 @@ import java.util.Date;
  * LogEntry-Objekte anhand unterschiedlicher Kriterien bietet die Klasse verschiedene Comparator,
  * z.B. für die Verwendung mit Collections.sort an.
  */
+@Entity
 public class LogEntry {
 
-    private final Date date;
-    private final float timeInMinutes;
-    private final float distanceInKilometers;
+    @PrimaryKey(autoGenerate = true)
+    public Integer uid;
+    @ColumnInfo(name = "date")
+    public final Date date;
+    @ColumnInfo(name = "time_in_minutes")
+    public final float timeInMinutes;
+    @ColumnInfo(name = "distance_in_kilomenters")
+    public final float distanceInKilometers;
 
     /**
      * Vorgefertigter Comparator, mit dessen Hilfe LogEntry-Objekte anhand des gespeicherten

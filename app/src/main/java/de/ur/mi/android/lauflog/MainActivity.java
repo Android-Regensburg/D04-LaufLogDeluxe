@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
+import de.ur.mi.android.lauflog.database.LogEntryDatabaseHelper;
 import de.ur.mi.android.lauflog.log.LogEntry;
 import de.ur.mi.android.lauflog.log.LogEntryAdapter;
 import de.ur.mi.android.lauflog.log.LogRequestConfig;
@@ -30,6 +32,7 @@ import de.ur.mi.android.lauflog.log.LogSortMode;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private LogEntryDatabaseHelper dbHelper;
     private ArrayList<LogEntry> log;
     private LogEntryAdapter logAdapter;
     private RecyclerView entriesList;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initUI();
         initLog();
+        initDB();
     }
 
     private void initUI() {
@@ -52,9 +56,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLog() {
-        log = new ArrayList<>();
+        log = new ArrayList();
         logAdapter = new LogEntryAdapter(log, this);
         entriesList.setAdapter(logAdapter);
+    }
+
+    private void initDB() {
+        dbHelper = new LogEntryDatabaseHelper(this);
+        try {
+            log = dbHelper.getAllEntries();
+            sortAndUpdateList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -118,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         int seconds = data.getExtras().getInt(LogRequestConfig.SECONDS_KEY);
         LogEntry entry = new LogEntry(date, minutes + seconds / 60f, distance);
         log.add(entry);
+        dbHelper.storeLogEntry(entry);
         sortAndUpdateList();
     }
 
