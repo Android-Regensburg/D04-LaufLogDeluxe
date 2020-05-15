@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,13 +26,13 @@ import de.ur.mi.android.lauflog.log.LogSortMode;
  * Zentrale Activity der Anwendung, die die folgenden Aufgaben erledigt:
  * - Verwaltet eine Liste aller vorhandenen Einträge (Läufe) des Logs
  * - Ermöglicht die Eingabe neuer Einträge durch den Aufruf der InputActivity
- * - Stellt den aktuellen Inhalt der Liste in einem ListView im UI dar
+ * - Stellt den aktuellen Inhalt der Liste in einem RecyclerView im UI dar
  */
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<LogEntry> log;
     private LogEntryAdapter logAdapter;
-    private ListView entriesList;
+    private RecyclerView entriesList;
     private TextView sortModeStatus;
     private LogSortMode currentSortMode = LogSortMode.DATE;
     private Comparator<LogEntry> currentComparator = LogEntry.DATE_COMPARATOR;
@@ -53,18 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initLog() {
         log = new ArrayList<>();
-        logAdapter = new LogEntryAdapter(this, log);
+        logAdapter = new LogEntryAdapter(log, this);
         entriesList.setAdapter(logAdapter);
     }
 
     /**
      * Sortiert die Einträge der ArrayList auf Basis des aktuell ausgewählten Sortiermodus und
-     * vordert im Anschluss den Adapter auf, das ListView über die Änderungen an der Datengrundlage
-     * zu informieren.
+     * übergibt die neue Liste im Anschluss dand en Adapter. Dieser informiert das angeschlossene
+     * View über die Änderungen am Datenbestand.
      */
     private void sortAndUpdateList() {
         Collections.sort(log, currentComparator);
-        logAdapter.notifyDataSetChanged();
+        logAdapter.setEntries(log);
     }
 
     /**

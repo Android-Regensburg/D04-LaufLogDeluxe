@@ -1,74 +1,96 @@
 package de.ur.mi.android.lauflog.log;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 import de.ur.mi.android.lauflog.R;
 
 /**
- * Adapter zur Anzeige einer Liste von LogEntries als Inhalt einer ListView im User Interface
+ * Adapter zur Anzeige einer Liste von LogEntries als Inhalt einem RecyclerView im User Interface
  */
-public class LogEntryAdapter extends ArrayAdapter<LogEntry> {
+public class LogEntryAdapter extends RecyclerView.Adapter<LogEntryAdapter.LogEntryViewHolder> {
 
-    // Liste der LogEntries, die über den Adapter verwaltet werden
+    // Liste der LogEntries, die über den Adapter verwaltet werden.
     private ArrayList<LogEntry> entries;
+    private Context context;
 
-    public LogEntryAdapter(Context context, ArrayList<LogEntry> entries) {
-        super(context, R.layout.item_log_entry, entries);
+    /**
+     * Konkrete Implementierung der abstrakten ViewHolder-Klasse. Instanzen von LogEntryViewHolder
+     * werden vom Adapter an den RecyclerView weitergegeben um die im Adapter gespeicherten Daten
+     * im User Interface anzuzeigen. Jedes Datum (hier jeder Eintrag in der LogEntry-Liste) wird
+     * dabei durch einen eigenen ViewHolder dargestellt.
+     */
+    public static class LogEntryViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+
+        public View entryView;
+
+        public LogEntryViewHolder(View v) {
+            super(v);
+            entryView = v;
+        }
+    }
+
+    public LogEntryAdapter(ArrayList<LogEntry> entries, Context context) {
         this.entries = entries;
+        this.context = context;
     }
 
     /**
-     * Wird vom angeschlossenen ListView aufgerufen, wenn Views für die Anzeige der einzelnen Listen-
-     * elementen benötigt wird. Wann das ListView diese anfordert wird vom Android-System gesteuert, z.B.
-     * beim Scrollen in der Liste.
+     * Ersettz die aktuell im Adapter gespeicherten Daten (LogEntry-Liste) und informiert das
+     * angeschlossene RecyclerView.
      */
-    @NonNull
+    public void setEntries(ArrayList<LogEntry> entries) {
+        this.entries = entries;
+        this.notifyDataSetChanged();
+    }
+
+    /**
+     * Erstellt bei Bedarf einen neuen ViewHolder für das angeschlossene RecyclerView.
+     */
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LogEntry currentEntry = entries.get(position);
-        return renderEntryInView(convertView, currentEntry);
+    public LogEntryAdapter.LogEntryViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                 int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_log_entry, parent, false);
+        LogEntryViewHolder vh = new LogEntryViewHolder(v);
+        return vh;
     }
 
     /**
-     * Gibt ein View zur Anzeige des übergebenen LogEntry in der angeschlossenen ListView zurück.
-     * Wurde für die Listenposition noch kein View erstellt (convertView == null) wird ein solches
-     * Element neu erstellt. In beiden Fällen werden die Eigenschaften des LogEntry-Objekts ausgelesen
-     * und in den entsprechenden TextViews des ListView-Eintrags eingetragen. Vor dem Eintragen der
-     * Werte im User Interface werden diese in ein jeweils passendes Format überführt.
+     * Trägt bei Bedard die Informationen (Streckenlänge, Geschwindikgeit, Zeit) eines einzelnen
+     * Eintrags in den vorbereiteten ViewHolder ein.
      */
-    private View renderEntryInView(View convertView, LogEntry entry) {
-        View entryView = convertView;
-        if (entryView == null) {
-            entryView = LayoutInflater.from(this.getContext()).inflate(R.layout.item_log_entry, null);
-        }
-        if (entry != null) {
-            TextView dateView = entryView.findViewById(R.id.log_entry_date);
-            TextView distanceView = entryView.findViewById(R.id.log_entry_distance);
-            TextView timeView = entryView.findViewById(R.id.log_entry_time);
-            TextView paceView = entryView.findViewById(R.id.log_entry_pace);
-            dateView.setText(getFormattedDate(entry.getDate()));
-            distanceView.setText(getFormattedDistance(entry.getDistance(), getContext().getString(R.string.kilometer_suffix)));
-            timeView.setText(getFormattedTime(entry.getTime(), getContext().getString(R.string.minutes_suffix)));
-            paceView.setText(getFormattedTime(entry.getPace()));
-        }
-        return entryView;
+    @Override
+    public void onBindViewHolder(LogEntryViewHolder holder, int position) {
+        LogEntry entry = entries.get(position);
+        TextView dateView = holder.entryView.findViewById(R.id.log_entry_date);
+        TextView distanceView = holder.entryView.findViewById(R.id.log_entry_distance);
+        TextView timeView = holder.entryView.findViewById(R.id.log_entry_time);
+        TextView paceView = holder.entryView.findViewById(R.id.log_entry_pace);
+        dateView.setText(getFormattedDate(entry.getDate()));
+        distanceView.setText(getFormattedDistance(entry.getDistance(), context.getString(R.string.kilometer_suffix)));
+        timeView.setText(getFormattedTime(entry.getTime(), context.getString(R.string.minutes_suffix)));
+        paceView.setText(getFormattedTime(entry.getPace()));
+    }
+
+    /**
+     * Gibt die insgesamte Anzahl an Einträge zurück, die im RecyclerView dargestellt werden sollen.
+     *
+     * @return
+     */
+    public int getItemCount() {
+        return entries.size();
     }
 
     private String getFormattedDate(Date date) {

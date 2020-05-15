@@ -1,9 +1,5 @@
 package de.ur.mi.android.lauflog.log;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import java.util.Comparator;
 import java.util.Date;
 
